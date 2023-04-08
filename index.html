@@ -1,42 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JS For Beginners</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <header>
-      <h1>JS For Beginners</h1>
-    </header>
+<html>
 
-    <section class="container">
-      <form id="my-form">
-        <h1>Add User</h1>
-        <div class="msg"></div>
-        <div>
-          <label for="name">Name:</label>
-          <input type="text" id="name">
-        </div>
-        <div>
-          <label for="email">Email:</label>
-          <input type="text" id="email">
-        </div>
-        <input class="btn" type="submit" value="Submit">
-      </form>
+<head>
+    <title>Booking Appointment Form</title>
+    <style>
+        /* Style for the form */
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-      <ul id="users"></ul>
+        /* Style for form labels and inputs */
+        label,
+        input {
+            display: block;
+            margin-bottom: 10px;
+        }
 
-      <!-- <ul class="items">
-        <li class="item">Item 1</li>
-        <li class="item">Item 2</li>
-        <li class="item">Item 3</li>
-      </ul> -->
-    </section>
-    
+        /* Style for the submit button */
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    <script src="main.js"></script>
-  </body>
-</html>
+        /* Style for the table that displays the data */
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Booking Appointment Form</h1>
+    <form id="booking-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email ID</label>
+        <input type="email" id="email" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <table id="booking-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email ID</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const form = document.querySelector('#booking-form');
+        const table = document.querySelector('#booking-table tbody');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get the form data
+            const name = form.elements['name'].value;
+            const email = form.elements['email'].value;
+            const phone = form.elements['phone'].value;
+
+            // Create a new row in the table with the form data
+            const row = table.insertRow(-1);
+            const nameCell = row.insertCell(0);
+            const emailCell = row.insertCell(1);
+            const phoneCell = row.insertCell(2);
+            nameCell.textContent = name;
+            emailCell.textContent = email;
+            phoneCell.textContent = phone;
+
+            // Save the form data to local storage
+            const data = {
+                name: name,
+                email: email,
+                phone: phone
+            };
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            bookings.push(data);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            // Reset the form
+            form.reset();
+        });
+
+        // Display any existing data in local storage
+        const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        bookings.forEach((data) => {
+            const row = table.insertRow(-1);
+            const nameCell = row.insertCell(0);
+            const emailCell = row.insertCell(1);
+            const phoneCell = row.insertCell(2);
+            nameCell.textContent = data.name;
+            emailCell.textContent = data.email;
+            phoneCell.textContent = data.phone;
+        });
+    <script/>
